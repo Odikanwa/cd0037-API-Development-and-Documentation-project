@@ -64,7 +64,7 @@ One note before you delve into your tasks: for each endpoint, you are expected t
 5. Create an endpoint to `POST` a new question, which will require the question and answer text, category, and difficulty score.
 6. Create a `POST` endpoint to get questions based on category.
 7. Create a `POST` endpoint to get questions based on a search term. It should return any questions for whom the search term is a substring of the question.
-8. Create a `POST` endpoint to get questions to play the quiz. This endpoint should take a category and previous question parameters and return a random questions within the given category, if provided, and that is not one of the previous questions.
+8. Create a `POST` endpoint to get questions to play the quiz. This endpoint should take a category and previous question parameters and return a random questions within the given category, if provided, and that is n ot one of the previous questions.
 9. Create error handlers for all expected errors including 400, 404, 422, and 500.
 
 ## Documenting your Endpoints

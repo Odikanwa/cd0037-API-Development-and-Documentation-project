@@ -94,7 +94,7 @@ class FormView extends Component {
               {Object.keys(this.state.categories).map((id) => {
                 return (
                   <option key={id} value={id}>
-                    {this.state.categories[id]}
+                    {this.state.categories.id}
                   </option>
                 );
               })}
