@@ -127,7 +127,7 @@ The API will return three error types when requests fail:
     "5": "Entertainment",
     "6": "Sports"
   },
-  "deleted": 39,
+  "created": 39,
   "questions": [
     {
       "answer": "Astatine",
