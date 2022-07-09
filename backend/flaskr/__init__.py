@@ -51,16 +51,20 @@ def create_app(test_config=None):
     """
     @app.route("/categories")
     def get_categories():
-        selection = Category.query.order_by(Category.type).all()
+        try:
+            selection = Category.query.order_by(Category.type).all()
+            if selection == None:
+                abort(404)
+            categories = {category.id: category.type for category in selection}
 
-        categories = {category.id: category.type for category in selection}
-
-        return jsonify(
-            {
-                "success": True,
-                "categories": categories,
-            }
-        )
+            return jsonify(
+                {
+                    "success": True,
+                    "categories": categories
+                }
+            )
+        except:
+            abort(500)
 
     """
     @TODO:
@@ -257,7 +261,7 @@ def create_app(test_config=None):
     """
     @app.route("/quizzes", methods=["POST"])
     def play_quiz():
-        # try:
+        try:
             body = request.get_json()
             previous_questions = body.get("previous_questions", None)
             quiz_category = body.get("quiz_category", None)
@@ -265,22 +269,35 @@ def create_app(test_config=None):
 
             if (previous_questions == None) and (quiz_category == None):
                 abort(422)
-
             
+            category = Category.query.all()
+
             if quiz_category:
-                available_questions  = Question.query.filter(Question.id.notin_((previous_questions))).filter(Question.category == quiz_category['id']).all()
+                # Filter by ID not in previous questions and by categories
+                available_questions  = Question.query.filter(Question.id.notin_((previous_questions))).filter(
+                    Question.category == quiz_category['id']).all()
+                
+                # If All category is selected
+                if quiz_category['id'] == 0:
+                    available_questions = Question.query.filter(Question.id.notin_((previous_questions))).all()
+                
                 question_list = [question.format() for question in available_questions]
-                questions = question_list[0:]
-                random_questions = random.choice(questions)
+                questions = question_list[0:]  
+            
+                if len(questions) > 0:
+                    random_questions = random.choice(questions)
+                else:
+                    random_questions = None
 
             return jsonify(
                 {
                     "success": True,
                     "question": random_questions
+                        
                 }
             )
-        # except:
-        #     abort(500)
+        except:
+            abort(500)
 
     """
     @TODO:
@@ -318,7 +335,7 @@ def create_app(test_config=None):
     @app.errorhandler(500)
     def not_allowed(error):
         return (
-            jsonify({"success": False, "error": 405, "message": "Server error"}),
+            jsonify({"success": False, "error": 500, "message": "Server error"}),
             500,
         )
 
