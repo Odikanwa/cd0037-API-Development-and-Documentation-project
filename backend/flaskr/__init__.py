@@ -1,5 +1,6 @@
 import os
 import json
+import re
 from urllib import response
 from flask import Flask, request, abort, jsonify, url_for, redirect
 from flask_cors import CORS
@@ -140,7 +141,7 @@ def create_app(test_config=None):
     """
     @app.route("/questions", methods=["POST"])
     def create_question():
-        try:
+        # try:
             body = request.get_json()
             new_question = body.get("question", None)
             new_answer = body.get("answer", None)
@@ -157,10 +158,12 @@ def create_app(test_config=None):
             question.insert()
 
             questions = Question.query.order_by(Question.id).all()
-            categories = Category.query.order_by(Category.type).all()
+            categories = Category.query.order_by(Category.id).all()
             current_questions = paginate_questions(request, questions)
             category_obj = {
                 category.id: category.type for category in categories}
+
+            # print(category_obj)
 
             return jsonify(
                 {
@@ -173,8 +176,8 @@ def create_app(test_config=None):
                 }
             )
 
-        except:
-            abort(400)
+        # except:
+        #     abort(400)
     """
     @TODO:
     Create a POST endpoint to get questions based on a search term.
@@ -190,9 +193,10 @@ def create_app(test_config=None):
         try:
             body = request.get_json()
             search = body.get("searchTerm", None)
-            allowed_search_chars = set("abcdefghijklmnopqrstuvwxyz! .")
 
-            if search and allowed_search_chars.issuperset(search):
+
+            pattern = '[a-zA-Z0-9]'
+            if (re.search(pattern, search)):
                 questions = Question.query.filter(
                     Question.question.ilike("%{}%".format(search))
                 ).all()

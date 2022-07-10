@@ -91,13 +91,23 @@ class FormView extends Component {
           <label>
             Category
             <select name='category' onChange={this.handleChange}>
-              {Object.keys(this.state.categories).map((id) => {
+            <option value='1'>{this.state.categories[1]}</option>
+              <option value='2'>{this.state.categories[2]}</option>
+              <option value='3'>{this.state.categories[3]}</option>
+              <option value='4'>{this.state.categories[4]}</option>
+              <option value='5'>{this.state.categories[5]}</option>
+              <option value='6'>{this.state.categories[6]}</option>
+              {/* {Object.keys(this.state.categories).map((id) => {
+                // console.log(this.state.categories.type)
+                
                 return (
                   <option key={id} value={id}>
                     {this.state.categories.id}
                   </option>
+                  
+                  
                 );
-              })}
+              })} */}
             </select>
           </label>
           <input type='submit' className='button' value='Submit' />
