@@ -141,7 +141,7 @@ def create_app(test_config=None):
     """
     @app.route("/questions", methods=["POST"])
     def create_question():
-        # try:
+        try:
             body = request.get_json()
             new_question = body.get("question", None)
             new_answer = body.get("answer", None)
@@ -176,8 +176,8 @@ def create_app(test_config=None):
                 }
             )
 
-        # except:
-        #     abort(400)
+        except:
+            abort(400)
     """
     @TODO:
     Create a POST endpoint to get questions based on a search term.
